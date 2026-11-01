@@ -1,0 +1,56 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = '记录开发实践与学习笔记。' } = Astro.props;
+const siteName = '我的网站';
+const pathname = Astro.url.pathname;
+const isHome = pathname === '/';
+const isAbout = pathname.startsWith('/about');
+const documentTitle = title === siteName ? siteName : `${title} · ${siteName}`;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{documentTitle}</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到正文</a>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="site-name" href="/">{siteName}</a>
+        <nav aria-label="主导航">
+          <ul class="nav-list">
+            <li>
+              <a href="/" aria-current={isHome ? 'page' : undefined}>首页</a>
+            </li>
+            <li>
+              <a href="/about/" aria-current={isAbout ? 'page' : undefined}>关于</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" class="container">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>{siteName} · 使用 <a href="https://astro.build/">Astro</a> 构建</p>
+      </div>
+    </footer>
+  </body>
+</html>

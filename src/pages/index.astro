@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { byDateDesc, formatDate, getPostPath, toDateAttribute } from '../lib/posts';
+
+const posts = (await getCollection('blog')).sort(byDateDesc);
+---
+
+<BaseLayout title="我的网站" description="记录开发实践与学习笔记。">
+  <section class="intro">
+    <h1>我的网站</h1>
+    <p class="lead">记录开发实践与学习笔记。</p>
+  </section>
+
+  <section aria-labelledby="posts-heading">
+    <h2 id="posts-heading" class="section-title">文章</h2>
+
+    {
+      posts.length === 0 ? (
+        <p>还没有文章。在 <code>src/content/blog</code> 中添加 Markdown 文件即可发布。</p>
+      ) : (
+        <ul class="post-list">
+          {posts.map((post) => (
+            <li class="post-item">
+              <article>
+                <h3>
+                  <a href={getPostPath(post.id)}>{post.data.title}</a>
+                </h3>
+                <p class="post-meta">
+                  <time datetime={toDateAttribute(post.data.pubDate)}>
+                    {formatDate(post.data.pubDate)}
+                  </time>
+                </p>
+                <p class="post-description">{post.data.description}</p>
+              </article>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </section>
+
+  <p class="about-link"><a href="/about/">了解关于这个网站 →</a></p>
+</BaseLayout>
