@@ -14,10 +14,10 @@
 
 | 项目 | 要求 | 本次验证使用 |
 | --- | --- | --- |
-| Node.js | `>=22.12.0`（Astro 7.3.8 的要求） | 22.20.0 |
+| Node.js | `>=22.19.0`（Astro 7.3.8 要求 `>=22.12.0`，锁文件中的 `undici` 要求 `>=22.19.0`） | 22.20.0 |
 | npm | `>=9.6.5` | 10.9.3 |
 
-仓库中的 `.nvmrc` 指定了 Node.js 22。如果使用 nvm，可以运行：
+仓库中的 `.nvmrc` 固定为本次验证使用的 Node.js 22.20.0。如果使用 nvm，可以运行：
 
 ```bash
 nvm use
@@ -55,10 +55,9 @@ npm run preview -- --port 4323
 
 | 内容 | 位置 |
 | --- | --- |
-| 网站名称（页头、页脚、页面标题） | `src/layouts/BaseLayout.astro` 中的 `siteName` |
-| 首页大标题和一句话介绍 | `src/pages/index.astro` 中的 `<h1>` 和 `.lead` 段落 |
+| 网站名称（页头、页脚、首页标题、页面标题） | `src/config.ts` 中的 `site.name` |
+| 一句话介绍（首页和默认页面描述） | `src/config.ts` 中的 `site.description` |
 | 关于页占位介绍 | `src/pages/about.astro` |
-| 默认页面描述 | `src/layouts/BaseLayout.astro` 中 `description` 的默认值 |
 | 全站样式 | `src/styles/global.css` |
 
 关于页目前是明确的占位内容，请替换成你自己的介绍。项目中没有编造学校、公司、履历或联系方式。
@@ -90,7 +89,7 @@ pubDate: 2026-02-01
 | `description` | 字符串 | 必填，不能为空，用于首页简介和页面描述 |
 | `pubDate` | 日期 | 必填，推荐使用 `YYYY-MM-DD` 格式 |
 
-约束定义在 `src/content.config.ts`。字段缺失或为空时，构建会失败并给出校验错误，而不是生成不完整的页面。文章按 `pubDate` 从新到旧排序。
+约束定义在 `src/content.config.ts`。字段缺失或为空时（包括空的 `pubDate`），构建会失败并给出校验错误，而不是生成不完整的页面或把日期静默变成 1970-01-01。文章按 `pubDate` 从新到旧排序。
 
 ### 示例文章
 
@@ -111,6 +110,7 @@ pubDate: 2026-02-01
 │   ├── content/
 │   │   └── blog/                 # Markdown 文章
 │   ├── content.config.ts         # 文章集合与元数据校验
+│   ├── config.ts                 # 网站名称和一句话介绍
 │   ├── layouts/
 │   │   └── BaseLayout.astro      # 全站 HTML 骨架、导航、页脚
 │   ├── lib/

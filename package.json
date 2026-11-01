@@ -5,7 +5,7 @@
   "private": true,
   "description": "记录开发实践与学习笔记的个人网站",
   "engines": {
-    "node": ">=22.12.0",
+    "node": ">=22.19.0",
     "npm": ">=9.6.5"
   },
   "scripts": {

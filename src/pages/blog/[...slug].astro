@@ -23,7 +23,7 @@ const { Content } = await render(post);
 
 <BaseLayout title={post.data.title} description={post.data.description}>
   <article class="post">
-    <nav class="back-link" aria-label="返回">
+    <nav class="back-link" aria-label="返回首页">
       <a href="/">← 返回首页</a>
     </nav>
 
@@ -40,7 +40,7 @@ const { Content } = await render(post);
       <Content />
     </div>
 
-    <nav class="post-footer back-link" aria-label="返回">
+    <nav class="post-footer back-link" aria-label="文章底部返回">
       <a href="/">← 返回首页</a>
     </nav>
   </article>

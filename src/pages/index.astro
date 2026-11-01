@@ -1,15 +1,16 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config';
 import { getCollection } from 'astro:content';
 import { byDateDesc, formatDate, getPostPath, toDateAttribute } from '../lib/posts';
 
 const posts = (await getCollection('blog')).sort(byDateDesc);
 ---
 
-<BaseLayout title="我的网站" description="记录开发实践与学习笔记。">
+<BaseLayout title={site.name} description={site.description}>
   <section class="intro">
-    <h1>我的网站</h1>
-    <p class="lead">记录开发实践与学习笔记。</p>
+    <h1>{site.name}</h1>
+    <p class="lead">{site.description}</p>
   </section>
 
   <section aria-labelledby="posts-heading">
