@@ -1,0 +1,42 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatDate, toDateAttribute, type Note } from '../../lib/posts';
+
+export async function getStaticPaths() {
+  const notes = await getCollection('note');
+
+  return notes.map((note) => ({
+    params: { slug: note.id },
+    props: { note },
+  }));
+}
+
+interface Props {
+  note: Note;
+}
+
+const { note } = Astro.props;
+const { Content } = await render(note);
+---
+
+<BaseLayout title={note.data.title} description={note.data.description}>
+  <article class="post">
+    <nav class="back-link" aria-label="返回 Note 列表">
+      <a href="/note/">← 返回 Note</a>
+    </nav>
+
+    <header class="post-header">
+      <h1>{note.data.title}</h1>
+      <p class="post-meta">
+        <time datetime={toDateAttribute(note.data.pubDate)}>
+          {formatDate(note.data.pubDate)}
+        </time>
+      </p>
+    </header>
+
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>

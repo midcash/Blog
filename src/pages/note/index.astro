@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { byDateDesc, formatDate, getPostPath, toDateAttribute } from '../../lib/posts';
+
+const notes = (await getCollection('note')).sort(byDateDesc);
+---
+
+<BaseLayout title="Note" description="随手记录的想法与实践。">
+  <section class="intro">
+    <h1>Note</h1>
+    <p class="lead">随手记录的想法与实践。</p>
+  </section>
+
+  {notes.length ? (
+    <ul class="post-list">
+      {notes.map((note) => (
+        <li class="post-item">
+          <article>
+            <h2><a href={getPostPath(note.id, 'note')}>{note.data.title}</a></h2>
+            <p class="post-meta">
+              <time datetime={toDateAttribute(note.data.pubDate)}>
+                {formatDate(note.data.pubDate)}
+              </time>
+            </p>
+            <p class="post-description">{note.data.description}</p>
+          </article>
+        </li>
+      ))}
+    </ul>
+  ) : <p>还没有笔记。</p>}
+</BaseLayout>
