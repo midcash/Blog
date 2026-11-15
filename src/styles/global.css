@@ -108,7 +108,7 @@ a:hover {
 }
 
 .nav-list a:hover,
-.nav-list a[aria-current="page"] {
+.nav-list a[aria-current] {
   color: var(--accent);
 }
 

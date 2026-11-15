@@ -1,0 +1,44 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import { formatDate, toDateAttribute, type Note, type Post } from '../lib/posts';
+
+interface Props {
+  entry: Post | Note;
+  backHref: string;
+  backLabel: string;
+  backNavLabel: string;
+  footerBackLink?: boolean;
+}
+
+const { entry, backHref, backLabel, backNavLabel, footerBackLink = false } = Astro.props;
+const { title, description, pubDate } = entry.data;
+const { Content } = await render(entry);
+---
+
+<BaseLayout title={title} description={description}>
+  <article class="post">
+    <nav class="back-link" aria-label={backNavLabel}>
+      <a href={backHref}>← {backLabel}</a>
+    </nav>
+
+    <header class="post-header">
+      <h1>{title}</h1>
+      <p class="post-meta">
+        <time datetime={toDateAttribute(pubDate)}>
+          {formatDate(pubDate)}
+        </time>
+      </p>
+    </header>
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    {footerBackLink && (
+      <nav class="post-footer back-link" aria-label="文章底部返回">
+        <a href={backHref}>← {backLabel}</a>
+      </nav>
+    )}
+  </article>
+</BaseLayout>

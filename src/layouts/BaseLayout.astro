@@ -12,6 +12,7 @@ const siteName = site.name;
 const pathname = Astro.url.pathname;
 const isHome = pathname === '/';
 const isNoteIndex = pathname === '/note/' || pathname === '/note';
+const noteCurrent = isNoteIndex ? 'page' : pathname.startsWith('/note/') ? 'location' : undefined;
 const isAbout = pathname.startsWith('/about');
 const documentTitle = title === siteName ? siteName : `${title} · ${siteName}`;
 ---
@@ -38,7 +39,7 @@ const documentTitle = title === siteName ? siteName : `${title} · ${siteName}`;
               <a href="/" aria-current={isHome ? 'page' : undefined}>首页</a>
             </li>
             <li>
-              <a href="/note/" aria-current={isNoteIndex ? 'page' : undefined}>Note</a>
+              <a href="/note/" aria-current={noteCurrent}>Note</a>
             </li>
             <li>
               <a href="/about/" aria-current={isAbout ? 'page' : undefined}>关于</a>
