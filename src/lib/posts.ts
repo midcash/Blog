@@ -1,6 +1,7 @@
 import type { CollectionEntry } from 'astro:content';
 
 export type Post = CollectionEntry<'blog'>;
+export type Note = CollectionEntry<'note'>;
 
 const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
   year: 'numeric',
@@ -9,7 +10,7 @@ const dateFormatter = new Intl.DateTimeFormat('zh-CN', {
   timeZone: 'UTC',
 });
 
-export function byDateDesc(a: Post, b: Post): number {
+export function byDateDesc(a: Post | Note, b: Post | Note): number {
   return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
 }
 
@@ -21,7 +22,7 @@ export function toDateAttribute(date: Date): string {
   return date.toISOString().slice(0, 10);
 }
 
-export function getPostPath(id: string): string {
+export function getPostPath(id: string, collection: 'blog' | 'note' = 'blog'): string {
   const encodedId = id.split('/').map(encodeURIComponent).join('/');
-  return `/blog/${encodedId}/`;
+  return `/${collection}/${encodedId}/`;
 }

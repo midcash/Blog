@@ -1,0 +1,22 @@
+---
+import { getCollection } from 'astro:content';
+import PostDetail from '../../layouts/PostDetail.astro';
+import type { Note } from '../../lib/posts';
+
+export async function getStaticPaths() {
+  const notes = await getCollection('note');
+
+  return notes.map((note) => ({
+    params: { slug: note.id },
+    props: { note },
+  }));
+}
+
+interface Props {
+  note: Note;
+}
+
+const { note } = Astro.props;
+---
+
+<PostDetail entry={note} backHref="/note/" backLabel="返回 Note" backNavLabel="返回 Note 列表" />

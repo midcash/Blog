@@ -1,8 +1,7 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getCollection, render } from 'astro:content';
+import { getCollection } from 'astro:content';
+import PostDetail from '../../layouts/PostDetail.astro';
 import type { Post } from '../../lib/posts';
-import { formatDate, toDateAttribute } from '../../lib/posts';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -18,30 +17,6 @@ interface Props {
 }
 
 const { post } = Astro.props;
-const { Content } = await render(post);
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description}>
-  <article class="post">
-    <nav class="back-link" aria-label="返回首页">
-      <a href="/">← 返回首页</a>
-    </nav>
-
-    <header class="post-header">
-      <h1>{post.data.title}</h1>
-      <p class="post-meta">
-        <time datetime={toDateAttribute(post.data.pubDate)}>
-          {formatDate(post.data.pubDate)}
-        </time>
-      </p>
-    </header>
-
-    <div class="prose">
-      <Content />
-    </div>
-
-    <nav class="post-footer back-link" aria-label="文章底部返回">
-      <a href="/">← 返回首页</a>
-    </nav>
-  </article>
-</BaseLayout>
+<PostDetail entry={post} backHref="/" backLabel="返回首页" backNavLabel="返回首页" footerBackLink />
